@@ -1,11 +1,12 @@
 package com.zebrunner;
 
+import com.zebrunner.agent.core.registrar.Screenshot;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import java.io.IOException;
+import java.nio.file.Files;
 
 import static org.testng.Assert.assertTrue;
 
@@ -13,43 +14,21 @@ public class DummyServiceTest {
 
     private static final Logger log = LoggerFactory.getLogger(DummyServiceTest.class);
 
-    // not supported!
-    @BeforeClass
-    public void beforeClass() {
-        log.info("BEFORE CLASS");
-    }
-
-    @BeforeMethod
-    public void beforeTest() {
-        log.info("BEFORE METHOD: Test execution is about to start...");
-    }
-
-    // not supported!
-    @AfterMethod
-    public void afterTest() {
-        log.info("AFTER METHOD: Test execution completed");
-    }
-
     @Test(testName = "Test #1")
-    public void firstTest() {
+    public void firstTest() throws IOException {
         log.info("Doing things: complex assertions, you know...");
+
+        Screenshot.upload(Files.readAllBytes(FileUtils.IMAGES[0].toPath()), System.currentTimeMillis());
+
         waitHooks();
         assertTrue(Boolean.TRUE);
     }
 
     @Test()
-    public void secondTest() {
+    public void secondTest() throws IOException {
         log.info("Info log");
-
-
-        for (int i = 0; i < 10; i++) {
-            log.info("Info log #" + i + " captured at " + System.currentTimeMillis());
-        }
-
-        log.debug("Debug log");
-        log.trace("Trace log");
+        Screenshot.upload(Files.readAllBytes(FileUtils.IMAGES[1].toPath()), System.currentTimeMillis());
         log.warn("Warn log");
-        log.error("Oh no!");
 
         waitHooks();
 
