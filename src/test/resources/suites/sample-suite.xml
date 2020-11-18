@@ -3,9 +3,9 @@
 <suite name="Sample suite" verbose="1">
 
     <test name="Regression1">
-        <classes>
-            <class name="com.zebrunner.DummyServiceTest"/>
-        </classes>
+        <packages>
+            <package name="com.zebrunner" />
+        </packages>
     </test>
 
 </suite>
