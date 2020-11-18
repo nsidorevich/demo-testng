@@ -1,14 +1,12 @@
 package com.zebrunner;
 
+import com.zebrunner.agent.core.annotation.TestLabel;
+import com.zebrunner.agent.core.registrar.Label;
 import org.testng.annotations.Test;
-
-import java.util.Random;
 
 import static org.testng.Assert.assertTrue;
 
 public class DummyServiceTest {
-
-    private static final Random r = new Random();
 
     @Test(testName = "First")
     public void firstTest() {
@@ -22,8 +20,20 @@ public class DummyServiceTest {
 
     @Test()
     public void thirdTest() {
-        boolean result = r.nextInt(10) > 5 ? Boolean.TRUE : Boolean.FALSE;
-        assertTrue(result);
+        assertTrue(Boolean.FALSE);
+    }
+
+    @Test(dependsOnMethods = "thirdTest")
+    @TestLabel(name = "test", value = "test-val") // will be attached
+    public void fourthTest() {
+        Label.attach("label", "depends-on-3rd"); // not gonna be attached, since test body never executed
+        assertTrue(Boolean.TRUE);
+    }
+
+    @Test(dependsOnMethods = "secondTest")
+    public void fifthTest() {
+        Label.attach("label", "depends-on-2nd");
+        assertTrue(Boolean.TRUE);
     }
 
 }
