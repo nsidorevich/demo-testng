@@ -1,27 +1,17 @@
 package com.zebrunner;
 
-import org.testng.annotations.DataProvider;
+import com.zebrunner.agent.core.registrar.Label;
 import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertTrue;
 
 public class DummyServiceTest {
 
-    @Test(testName = "First")
+    // may result into SSL issue because of Unirest bug
+    @Test(testName = "First", invocationCount = 10, threadPoolSize = 2)
     public void firstTest() {
+        Label.attach("thread", Thread.currentThread().getName());
         assertTrue(Boolean.TRUE);
-    }
-
-    @DataProvider(name = "numbers-provider")
-    public Object[][] numbers() {
-        return new Object[][] { { 1 }, { 2 }, { 3 } };
-    }
-
-    // if test will fail - try to execute it up to 3 times
-    @Test(dataProvider = "numbers-provider", retryAnalyzer = CustomRetryAnalyzer.class)
-    public void testWithDP(int number) {
-        boolean result = number == 2 ? Boolean.FALSE : Boolean.TRUE;
-        assertTrue(result);
     }
 
 }
